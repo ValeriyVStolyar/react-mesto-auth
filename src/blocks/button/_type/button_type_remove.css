@@ -1,0 +1,19 @@
+.button_type_remove {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  min-width: 18px;
+  height: 19.3px;
+  background: transparent;
+  background-image: url(../../../images/place-trash.svg);
+  background-size: auto;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  border: none;
+  z-index: 2;
+}
+
+.button_type_remove:hover {
+  opacity: .5;
+  cursor: pointer;
+}

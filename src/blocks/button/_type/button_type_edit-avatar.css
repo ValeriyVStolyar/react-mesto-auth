@@ -1,0 +1,31 @@
+.button_type_edit-avatar {
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  background-image: url(../../../images/profile-edit-avatar.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  position: relative;
+  transform: translate(-50%, -50%);
+  left: -60px;
+  top: 60px;
+  opacity: .7;
+  z-index: 3;
+}
+
+.button_type_edit-avatar:hover {
+  opacity: 1;
+  z-index: 4;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .button_type_edit-avatar {
+    width: 16px;
+    height: 16px;
+  }
+}

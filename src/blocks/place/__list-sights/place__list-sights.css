@@ -1,0 +1,8 @@
+.place__list-sights {
+  max-width: 100%;
+  margin: 0 21px 0 21px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}

@@ -1,0 +1,51 @@
+.popup__input_type_name+ .popup__error_visible {
+  top: 48%;
+}
+
+@media screen and (max-width: 505px) {
+  .popup__input_type_name+ .popup__error_visible {
+    top: 53%;
+  }
+}
+
+.popup__input_type_job+ .popup__error_visible {
+  top: 64%;
+}
+
+@media screen and (max-width: 505px) {
+  .popup__input_type_job+ .popup__error_visible {
+    top: 71%;
+  }
+}
+
+.popup__input_type_place+ .popup__error_visible {
+  top: 46%;
+}
+
+@media screen and (max-width: 505px) {
+  .popup__input_type_place+ .popup__error_visible {
+    padding-left: 22px;
+    padding-right: 22px;
+    top: 53%;
+  }
+}
+
+.popup__input_type_link+ .popup__error_visible {
+  top: 66%;
+}
+
+@media screen and (max-width: 505px) {
+  .popup__input_type_link+ .popup__error_visible {
+    top: 68%;
+  }
+}
+
+.popup__input_type_avatar+ .popup__error_visible {
+  top: 61%;
+}
+
+@media screen and (max-width: 505px) {
+  .popup__input_type_avatar+ .popup__error_visible {
+    top: 65%;
+  }
+}

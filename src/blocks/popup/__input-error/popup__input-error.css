@@ -1,0 +1,30 @@
+.popup__input-error {
+  font-size: 12px;
+  line-height: 1.25;
+  font-style: normal;
+  font-weight: normal;
+  color: #f00;
+  top: 0;
+  left: 0;
+  position: absolute;
+  padding-left: 36px;
+  padding-right: 36px;
+  -webkit-transform: translateY(-50%) scale(1);
+  -moz-transform: translateY(-50%) scale(1);
+  -ms-transform: translateY(-50%) scale(1);
+  -o-transform: translateY(-50%) scale(1);
+  transform: translateY(-50%) scale(1);
+  /* -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s; */
+  pointer-events: none;
+}
+
+@media screen and (max-width: 505px) {
+  .popup__input-error {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}

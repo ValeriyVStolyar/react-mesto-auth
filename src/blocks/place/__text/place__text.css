@@ -1,0 +1,9 @@
+.place__text {
+  font-size: 13px;
+  line-height: 1.23;
+  font-weight: normal;
+  font-style: normal;
+  color: #000;
+  padding-top: 3px;
+  margin: 0;
+}

@@ -1,0 +1,16 @@
+.button_type_like {
+  min-width: 22px;
+  height: 19px;
+  padding: 0;
+  background: transparent;
+  background-image: url(../../../images/place-heart.svg);
+  background-size: auto;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  border: none;
+}
+
+.button_type_like:hover {
+  opacity: .5;
+  cursor: pointer;
+}

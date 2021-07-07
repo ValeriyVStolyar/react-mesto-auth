@@ -1,0 +1,10 @@
+.popup__title_size_small {
+  padding: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.popup__title_size_small::first-letter {
+  text-transform: uppercase;
+}

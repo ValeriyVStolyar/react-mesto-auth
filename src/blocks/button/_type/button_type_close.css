@@ -1,0 +1,43 @@
+.button_type_close {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  transform: rotate(45deg);
+  border-top: none;
+  border-left: none;
+  border: none;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+}
+
+.button_type_close::after, .button_type_close::before {
+  content: '';
+  display: block;
+  border-bottom: 3px solid #fff;
+}
+
+.button_type_close::before {
+  transform: translateY(100%);
+}
+
+.button_type_close::after {
+  transform: rotate(90deg);
+}
+
+@media screen and (max-width: 505px) {
+  .button_type_close {
+    top: -48px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .button_type_close {
+    width: 26px;
+    height: 26px;
+  }
+}
