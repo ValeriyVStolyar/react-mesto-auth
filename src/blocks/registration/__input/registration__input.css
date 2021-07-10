@@ -1,12 +1,14 @@
-.popup__input {
+.registration__input {
+  width: 358px;
   margin-bottom: 30px;
-  padding-bottom: 9px;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  padding-bottom: 13px;
+  border-bottom: 2px solid #ccc;
   font-size: 14px;
   line-height: 1.21;
   font-weight: normal;
   font-style: normal;
-  color: #000;
+  color: #ccc;
+  background: inherit;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -15,6 +17,6 @@
   border-left: none;
 }
 
-.popup__input:focus {
+.registration__input:focus {
   outline: none;
 }

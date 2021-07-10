@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Redirect, Switch, Route } from "react-router-dom";
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -9,7 +10,10 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -18,6 +22,8 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+
+  const[loggedIn, setLoggedIn] = React.useState(false);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -122,7 +128,65 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
+
+        {/* ниже разместим защищённые маршруты */}
+        {/* и передадим несколько пропсов: loggedIn, path, component */}
+      {/* <Switch>
+        <ProtectedRoute
+          path="/ducks"
+          loggedIn={loggedIn}
+          component={Main}
+        />
+        <ProtectedRoute
+          path="/my-profile"
+          loggedIn={loggedIn}
+          component={Header}
+        />
+        <Route path="/login">
+          <div className="loginContainer">
+            <Login handleLogin={this.handleLogin} />
+          </div>
+        </Route>
+        <Route path="/register">
+          <div className="registerContainer">
+            <Register />
+          </div>
+        </Route>
+        <Route>
+          {loggedIn ? (
+            <Redirect to="/ducks" />
+          ) : (
+            <Redirect to="/login" />
+          )}
+        </Route>
+
+        <Route exact path="/">
+          {loggedIn ? <Redirect to="/ducks" /> : <Redirect to="/sing-in" />}
+        </Route>
+
+      </Switch> */}
+
         <Header />
+        <Switch>
+          <ProtectedRoute path="/reg">
+            loggedIn={loggedIn}
+            component={Register}
+          </ProtectedRoute>
+          <ProtectedRoute path="/pop">
+            loggedIn={loggedIn}
+            component={InfoTooltip}
+          </ProtectedRoute>
+          <Route path="/first">
+            <Header />
+          </Route>
+          <Route path="/second">
+            <Footer />
+          </Route>
+          <Route >
+            {loggedIn ? <Redirect to="/reg" /> : <Redirect to="/second" />}
+          </Route>
+        </Switch>
+
         <Main
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
