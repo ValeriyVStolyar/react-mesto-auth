@@ -4,19 +4,18 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 import popupSaccess from '../images/popup-union-success.svg';
 import popupFail from '../images/popup-union-fail.svg';
 
-function InfoTooltip({  }) {
+function InfoTooltip({ isOpen, onClose }) {
 
 
 
   return (
     <section>
-      <article className="popup popup_type_success popup_opened">
+      <article className={`popup popup_type_success ${isOpen && "popup_opened"}`}>
         <form action="#" method="POST" name="Input-list-places"
           className="popup__container popup__validate">
           <img src={popupSaccess} alt="Успешная регистрация" className="popup__image-result" />
           <button type="button" aria-label="Закрыть попап"
-            // className="button button_type_close" onClick={onClose}></button>
-            className="button button_type_close"></button>
+            className="button button_type_close" onClick={onClose}></button>
           <h2 className="popup__title">вы успешно зарегистрировались&#33;</h2>
         </form>
       </article>

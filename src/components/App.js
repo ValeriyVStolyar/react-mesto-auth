@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Switch, Route } from "react-router-dom";
+import { Redirect, Switch, Route, useHistory } from "react-router-dom";
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -14,16 +14,57 @@ import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
+import * as auth from '../utils/auth';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
-  const[loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+
+  const history = useHistory();
+
+  //  React.useEffect(() => {
+  const tokenCheck = () => {
+    // если у пользователя есть токен в localStorage,
+    // эта функция проверит валидность токена
+    const jwt = localStorage.getItem('token');
+    console.log(jwt)
+    if (jwt) {
+      // проверим токен
+      auth.getToken(jwt)
+        .then((res) => {
+          console.log(res)
+          if (res) {
+            // здесь можем получить данные пользователя!
+            // const userData = {
+            //   // password: res.username,
+            //   // email: res.email
+            //   // setEmail(res.email);
+            // }
+            // поместим их в стейт внутри App.js
+            setLoggedIn(true);
+            setEmail(res.data.email);
+            console.log(res.data.email)
+            history.push("/");
+            // this.setState({
+            //   loggedIn: true,
+            //   userData
+            // }, () => {
+            //   history.push("/");
+            // });
+          }
+        });
+    }
+  };
+  //  }, [history]);
+  tokenCheck();
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -37,6 +78,10 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  // const handleInfoTooltip = () => {
+  //   setIsInfoTooltipPopupOpen(true);
+  // }
+
   const handleCardClick = (card) => {
     setSelectedCard(card);
   }
@@ -45,6 +90,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
     setSelectedCard({ name: '', link: '' });
   }
 
@@ -125,77 +171,93 @@ function App() {
       .catch(err => console.log('Ошибка. Запрос на добавление карточки не выполнен.'));
   }
 
+  const handleLogin = (password, email) => {
+    // auth.authorize(password, email)
+    // .then((result) => {
+    //   console.log(result)
+    // })
+    // .catch(err => console.log('Ошибка. Запрос на вход не выполнен.'));
+    setLoggedIn(true);
+    console.log('вход выполнен');
+    setIsInfoTooltipPopupOpen(true);
+  }
+
+  const handleRegister = (password, email) => {
+    auth.register(password, email)
+      .then((result) => {
+        console.log(result)
+      })
+      .catch(err => console.log('Ошибка. Запрос на регистрацию не выполнен.'));
+  }
+
+  console.log(email)
+
+  function signOut() {
+    setLoggedIn(false);
+    localStorage.removeItem('jwt');
+    history.push('/singin');
+    setEmail(false);
+  }
+
+  // tokenCheck();
+  // console.log(tokenCheck())
+
+  //   fetch(`https://auth.nomoreparties.co/signin`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ password: '909@mail.ru', email: '909@mail.ru' })
+  // })
+  // fetch('https://auth.nomoreparties.co/signin', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     password: '12345435',
+  //     email: '12345435@mail.ru',
+  //   }),
+  // })
+  //   .then((res) => res.json())
+  //   .then((data) => console.log(data));
+
+  //   data: {_id: "60e9cff0546906001995ebc1", email: "12345435@mail.ru"}
+  // _{token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M…wMjR9.3F_KoJYMhyr9FO0mdB6b21pXMWB-4bgRb6-_4dGZjQQ"}
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
 
         {/* ниже разместим защищённые маршруты */}
         {/* и передадим несколько пропсов: loggedIn, path, component */}
-      {/* <Switch>
-        <ProtectedRoute
-          path="/ducks"
-          loggedIn={loggedIn}
-          component={Main}
+
+        <Header
+          email={email}
         />
-        <ProtectedRoute
-          path="/my-profile"
-          loggedIn={loggedIn}
-          component={Header}
-        />
-        <Route path="/login">
-          <div className="loginContainer">
-            <Login handleLogin={this.handleLogin} />
-          </div>
-        </Route>
-        <Route path="/register">
-          <div className="registerContainer">
-            <Register />
-          </div>
-        </Route>
-        <Route>
-          {loggedIn ? (
-            <Redirect to="/ducks" />
-          ) : (
-            <Redirect to="/login" />
-          )}
-        </Route>
-
-        <Route exact path="/">
-          {loggedIn ? <Redirect to="/ducks" /> : <Redirect to="/sing-in" />}
-        </Route>
-
-      </Switch> */}
-
-        <Header />
         <Switch>
-          <ProtectedRoute path="/reg">
+          <ProtectedRoute exact path="/">
             loggedIn={loggedIn}
-            component={Register}
+            component={Main}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
           </ProtectedRoute>
-          <ProtectedRoute path="/pop">
-            loggedIn={loggedIn}
-            component={InfoTooltip}
-          </ProtectedRoute>
-          <Route path="/first">
-            <Header />
+          <Route path="/signin">
+            {/* <Login {...props} onLogin={handleLogin} /> */}
+            <Login onLogin={handleLogin} />
           </Route>
-          <Route path="/second">
-            <Footer />
+          <Route path="/signup">
+            <Register onRegister={handleRegister} />
           </Route>
           <Route >
-            {loggedIn ? <Redirect to="/reg" /> : <Redirect to="/second" />}
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
           </Route>
         </Switch>
-
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
         <Footer />
         <PopupWithForm
           name="submition"
@@ -221,6 +283,11 @@ function App() {
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
+        />
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          onClose={closeAllPopups}
+          loggedIn={loggedIn}
         />
       </div>
     </CurrentUserContext.Provider>
