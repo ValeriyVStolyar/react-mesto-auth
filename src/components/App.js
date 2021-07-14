@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Switch, Route, useHistory } from "react-router-dom";
+import { Redirect, Switch, Route, useHistory, withRouter } from "react-router-dom";
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -16,7 +16,7 @@ import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import * as auth from '../utils/auth';
 
-function App() {
+function App(props) {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -30,41 +30,82 @@ function App() {
 
   const history = useHistory();
 
-  //  React.useEffect(() => {
-  const tokenCheck = () => {
-    // если у пользователя есть токен в localStorage,
-    // эта функция проверит валидность токена
-    const jwt = localStorage.getItem('token');
-    console.log(jwt)
-    if (jwt) {
-      // проверим токен
-      auth.getToken(jwt)
-        .then((res) => {
-          console.log(res)
-          if (res) {
-            // здесь можем получить данные пользователя!
-            // const userData = {
-            //   // password: res.username,
-            //   // email: res.email
-            //   // setEmail(res.email);
-            // }
-            // поместим их в стейт внутри App.js
+  console.log(email)
+  console.log(loggedIn)
+
+  React.useEffect(() => {
+    //  setLoggedIn(true);
+  }, [])
+
+
+  // React.useEffect(() => {
+  //   const tokenCheck = () => {
+  //     // если у пользователя есть токен в localStorage,
+  //     // эта функция проверит валидность токена
+  //     const jwt = localStorage.getItem('token');
+  //     console.log(jwt)
+  //     if (jwt) {
+  //       // проверим токен
+  //       auth.getToken(jwt)
+  //         .then((res) => {
+  //           console.log(res)
+  //           if (res) {
+  //             // здесь можем получить данные пользователя!
+  //             // const userData = {
+  //             //   // password: res.username,
+  //             //   // email: res.email
+  //             //   // setEmail(res.email);
+  //             // }
+  //             // поместим их в стейт внутри App.js
+  //             setLoggedIn(true);
+  //             setEmail(res.data.email);
+  //             console.log(res.data.email)
+  //             history.push("/");
+  //             // this.setState({
+  //             //   loggedIn: true,
+  //             //   userData
+  //             // }, () => {
+  //             //   history.push("/");
+  //             // });
+  //           }
+  //         })
+  //         .catch(err => console.log('Ошибка. Запрос на проверку токена не выполнен.'));
+  //     }
+  //   };
+  // //  tokenCheck();
+  // }, [history]);
+  //  tokenCheck();
+
+//  React.useEffect(() => {
+    const tokenCheck = () => {
+      // если у пользователя есть токен в localStorage,
+      // эта функция проверит валидность токена
+      const jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        // проверим токен
+        //  auth.getContent(jwt)
+        auth.getContent(jwt)
+          .then((res) => {
+            console.log(res)
             setLoggedIn(true);
-            setEmail(res.data.email);
-            console.log(res.data.email)
+            setEmail(res.data.email)
             history.push("/");
-            // this.setState({
-            //   loggedIn: true,
-            //   userData
-            // }, () => {
-            //   history.push("/");
-            // });
-          }
-        });
+            // if (res) {
+            //   // авторизуем пользователя
+            //   ({
+            //     loggedIn
+            //   }, () => {
+            //     // обернём App.js в withRouter
+            //     // так, что теперь есть доступ к этому методу
+            //     this.props.history.push("/");
+            //   });
+            // }
+          });
+      }
     }
-  };
-  //  }, [history]);
-  tokenCheck();
+ //   tokenCheck();
+//  }, [history]);
+
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -93,6 +134,19 @@ function App() {
     setIsInfoTooltipPopupOpen(false);
     setSelectedCard({ name: '', link: '' });
   }
+
+  const handleEscClose = (evt) => {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+    }
+  }
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleEscClose);
+    return () => {
+      document.removeEventListener('keydown', handleEscClose);
+    }
+  })
 
   useEffect(() => {
     api.getUserInfo()
@@ -172,11 +226,11 @@ function App() {
   }
 
   const handleLogin = (password, email) => {
-    // auth.authorize(password, email)
-    // .then((result) => {
-    //   console.log(result)
-    // })
-    // .catch(err => console.log('Ошибка. Запрос на вход не выполнен.'));
+    auth.authorize(password, email)
+      .then((result) => {
+        console.log(result)
+      })
+      .catch(err => console.log('Ошибка. Запрос на вход не выполнен.'));
     setLoggedIn(true);
     console.log('вход выполнен');
     setIsInfoTooltipPopupOpen(true);
@@ -189,8 +243,6 @@ function App() {
       })
       .catch(err => console.log('Ошибка. Запрос на регистрацию не выполнен.'));
   }
-
-  console.log(email)
 
   function signOut() {
     setLoggedIn(false);
@@ -225,6 +277,9 @@ function App() {
   //   data: {_id: "60e9cff0546906001995ebc1", email: "12345435@mail.ru"}
   // _{token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M…wMjR9.3F_KoJYMhyr9FO0mdB6b21pXMWB-4bgRb6-_4dGZjQQ"}
 
+
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -234,7 +289,19 @@ function App() {
 
         <Header
           email={email}
+          loggedIn={loggedIn}
+          text={'выйти'}
+          onSignOut={signOut}
         />
+        {/* <Main
+          onEditAvatar={handleEditAvatarClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+        /> */}
         <Switch>
           <ProtectedRoute exact path="/">
             loggedIn={loggedIn}
@@ -294,5 +361,5 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);
 

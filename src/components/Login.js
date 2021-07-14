@@ -1,12 +1,13 @@
 import React, { Button } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as auth from '../utils/auth';
+import Header from './Header';
 // import App from './App';
 
 // const [email, setEmail] = React.useState('');
 // const [password, setPassword] = React.useState('');
 
-function Login(props, onLogin) {
+function Login(props) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -59,12 +60,11 @@ function Login(props, onLogin) {
 
   return (
     <>
-      <header className="header">
-        <a href="#" rel="noopener" className="logo"></a>
-        <p className="header__text">
-          регистрация
-      </p>
-      </header>
+      <Header
+        text={'регистрация'}
+        link={'signup'}
+        email={email}
+      />
       <main className="content">
         <section className="registration">
           <form onSubmit={handleSubmit} className="register__form">
