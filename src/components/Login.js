@@ -60,11 +60,11 @@ function Login(props) {
 
   return (
     <>
-      <Header
+      {/* <Header
         text={'регистрация'}
         link={'signup'}
         email={email}
-      />
+      /> */}
       <main className="content">
         <section className="registration">
           <form onSubmit={handleSubmit} className="register__form">

@@ -34,7 +34,7 @@ function App(props) {
   console.log(loggedIn)
 
   React.useEffect(() => {
-    //  setLoggedIn(true);
+  //   setLoggedIn(true);
   }, [])
 
 
@@ -226,11 +226,11 @@ function App(props) {
   }
 
   const handleLogin = (password, email) => {
-    auth.authorize(password, email)
-      .then((result) => {
-        console.log(result)
-      })
-      .catch(err => console.log('Ошибка. Запрос на вход не выполнен.'));
+    // auth.authorize(password, email)
+    //   .then((result) => {
+    //     console.log(result)
+    //   })
+    //   .catch(err => console.log('Ошибка. Запрос на вход не выполнен.'));
     setLoggedIn(true);
     console.log('вход выполнен');
     setIsInfoTooltipPopupOpen(true);
@@ -247,7 +247,7 @@ function App(props) {
   function signOut() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
-    history.push('/singin');
+    history.push('/signin');
     setEmail(false);
   }
 
@@ -290,8 +290,28 @@ function App(props) {
         <Header
           email={email}
           loggedIn={loggedIn}
-          text={'выйти'}
+          // text={'выйти'}
+          // text={text}
           onSignOut={signOut}
+          // {
+          //   {loggedIn ? (<>'ji'</>) : (<>'jji'</>)}
+          // }
+          // {loggedIn
+          //   ? (<>
+          //       <div className='header__info-desktop'>
+          //         <span>{props.email}</span>
+          //         <button className='button link header__link' onClick={props.signOut}>Выйти</button>
+          //       </div>
+          //       <button
+          //         className={`header__menu  ${props.classHeaderMenu}`}
+          //         onClick={openAuthInfo}
+          //       >
+          //         <span/>
+          //       </button>
+          //     </>
+          //   )
+          //   : (<Link to={linkPath} className="button link header__link">{linkText}</Link>)
+          // }
         />
         {/* <Main
           onEditAvatar={handleEditAvatarClick}
@@ -303,7 +323,7 @@ function App(props) {
           onCardDelete={handleCardDelete}
         /> */}
         <Switch>
-          <ProtectedRoute exact path="/">
+          <ProtectedRoute exact path="/"
             loggedIn={loggedIn}
             component={Main}
             onEditAvatar={handleEditAvatarClick}
@@ -313,7 +333,9 @@ function App(props) {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
-          </ProtectedRoute>
+
+          />
+
           <Route path="/signin">
             {/* <Login {...props} onLogin={handleLogin} /> */}
             <Login onLogin={handleLogin} />

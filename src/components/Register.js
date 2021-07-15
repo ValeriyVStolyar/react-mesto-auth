@@ -1,7 +1,7 @@
 import React, { Button } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as auth from '../utils/auth';
-import Header from './Header';
+//import Header from './Header';
 
 // function Register ({onRegister}) {
 
@@ -153,7 +153,7 @@ class Register extends React.Component {
             this.setState({
               message: ''
             }, () => {
-              this.props.history.push('/singin');
+              this.props.history.push('/signin');
             })
           } else {
             this.setState({
@@ -172,10 +172,10 @@ class Register extends React.Component {
             войти
           </p>
         </header> */}
-        <Header
+        {/* <Header
           text={'войти'}
           link={'singin'}
-        />
+        /> */}
         <main className="content">
           <section className="registration">
             <form onSubmit={this.handleSubmit} className="register__form">
