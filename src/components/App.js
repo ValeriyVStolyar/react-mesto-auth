@@ -204,6 +204,16 @@ function App(props) {
     setLoggedIn(true);
     console.log('вход выполнен');
     setIsInfoTooltipPopupOpen(true);
+    const jwt = localStorage.getItem('token');
+  if (jwt) {
+    auth.getContent(jwt)
+      .then((res) => {
+        setLoggedIn(true);
+         setEmail(res.data.email);
+         history.push('/');
+       })
+       .catch((err) => console.log(err));
+   }
   }
 
   const handleRegister = (password, email) => {
@@ -214,37 +224,50 @@ function App(props) {
       .catch(err => console.log('Ошибка. Запрос на регистрацию не выполнен.'));
   }
 
-    // React.useEffect(() => {
-    const tokenCheck = () => {
-      // если у пользователя есть токен в localStorage,
-      // эта функция проверит валидность токена
-      const jwt = localStorage.getItem('token');
-      console.log(jwt)
-      if (jwt) {
-        // проверим токен
-        //  auth.getContent(jwt)
-        auth.getContent(jwt)
-          .then((res) => {
-            console.log(res)
-            setLoggedIn(true);
-            setEmail(res.data.email)
-            history.push("/");
-            // if (res) {
-            //   // авторизуем пользователя
-            //   ({
-            //     loggedIn
-            //   }, () => {
-            //     // обернём App.js в withRouter
-            //     // так, что теперь есть доступ к этому методу
-            //     this.props.history.push("/");
-            //   });
-            // }
-          });
-      }
-    }
-    tokenCheck();
-    console.log(tokenCheck)
-  // }, [history]);
+//     // React.useEffect(() => {
+//     const tokenCheck = () => {
+//       // если у пользователя есть токен в localStorage,
+//       // эта функция проверит валидность токена
+//       const jwt = localStorage.getItem('token');
+//       console.log(jwt)
+//       if (jwt) {
+//         // проверим токен
+//         //  auth.getContent(jwt)
+//         auth.getContent(jwt)
+//           .then((res) => {
+//             console.log(res)
+//             setLoggedIn(true);
+//             setEmail(res.data.email)
+//             history.push("/");
+//             // if (res) {
+//             //   // авторизуем пользователя
+//             //   ({
+//             //     loggedIn
+//             //   }, () => {
+//             //     // обернём App.js в withRouter
+//             //     // так, что теперь есть доступ к этому методу
+//             //     this.props.history.push("/");
+//             //   });
+//             // }
+//           });
+//       }
+//     }
+// //    tokenCheck();
+//     console.log(tokenCheck)
+//   // }, [history]);
+
+React.useEffect(() => {
+  const jwt = localStorage.getItem('token');
+  if (jwt) {
+    auth.getContent(jwt)
+      .then((res) => {
+        setLoggedIn(true);
+         setEmail(res.data.email);
+         history.push('/');
+       })
+       .catch((err) => console.log(err));
+   }
+ }, [history]);
 
   function signOut() {
     setLoggedIn(false);

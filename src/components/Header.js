@@ -29,11 +29,15 @@ function Header({ email, onSignOut, loggedIn }) {
     <header className="header">
       <a href="#" rel="noopener" className="logo"></a>
       {loggedIn
-        ? (<>
-          <p className="header__text">{email}</p>
-          <p><Link to={link} className="header__text" onClick={onSignOut}>выйти</Link></p>
-        </>
-        ) : (<p><Link to={link} className="header__text" onClick={onSignOut}>{text}</Link></p>)
+        ? (<ul className="header__list">
+          <li className="header__text">{email}</li>
+          <li className="header__text">
+            <Link to={link} className="header__link" onClick={onSignOut}>выйти</Link>
+          </li>
+        </ul>
+        ) : (<p className="header__text">
+          <Link to={link} className="header__link" onClick={onSignOut}>{text}</Link>
+             </p>)
       }
     </header>
   );

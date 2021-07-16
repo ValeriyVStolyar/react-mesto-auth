@@ -1,33 +1,31 @@
-.header__text {
-  text-transform: capitalize;
+.header__link {
+  /* text-transform: uppercase;
   color: #fff;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
-  line-height: 1.22;
-  /* text-decoration: none;
-  transition: opacity 2s ease-out; */
+  line-height: 1.22; */
+  text-decoration: none;
+  transition: opacity 2s ease-out;
+  color: #000;
 }
-.header__text:first-child {
-  margin-right: 20px;
-}
-/*
-.header__text:hover {
+
+.header__link:hover {
   opacity: .6;
   cursor: pointer;
 }
 
-.header__text:visited {
+.header__link:visited {
   text-decoration: none;
   color: #fff;
 }
 
-.header__text:active {
+.header__link:active {
   text-decoration: none;
   color: #fff;
-} */
+}
 
-@media screen and (max-width: 1023px) {
+/* @media screen and (max-width: 1023px) {
   .header__text {
     font-size: 16px;
   }
@@ -37,4 +35,4 @@
   .header__text {
     font-size: 14px;
   }
-}
+} */
