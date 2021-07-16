@@ -76,36 +76,6 @@ function App(props) {
   // }, [history]);
   //  tokenCheck();
 
-//  React.useEffect(() => {
-    const tokenCheck = () => {
-      // если у пользователя есть токен в localStorage,
-      // эта функция проверит валидность токена
-      const jwt = localStorage.getItem('jwt');
-      if (jwt) {
-        // проверим токен
-        //  auth.getContent(jwt)
-        auth.getContent(jwt)
-          .then((res) => {
-            console.log(res)
-            setLoggedIn(true);
-            setEmail(res.data.email)
-            history.push("/");
-            // if (res) {
-            //   // авторизуем пользователя
-            //   ({
-            //     loggedIn
-            //   }, () => {
-            //     // обернём App.js в withRouter
-            //     // так, что теперь есть доступ к этому методу
-            //     this.props.history.push("/");
-            //   });
-            // }
-          });
-      }
-    }
- //   tokenCheck();
-//  }, [history]);
-
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -244,12 +214,46 @@ function App(props) {
       .catch(err => console.log('Ошибка. Запрос на регистрацию не выполнен.'));
   }
 
+    // React.useEffect(() => {
+    const tokenCheck = () => {
+      // если у пользователя есть токен в localStorage,
+      // эта функция проверит валидность токена
+      const jwt = localStorage.getItem('token');
+      console.log(jwt)
+      if (jwt) {
+        // проверим токен
+        //  auth.getContent(jwt)
+        auth.getContent(jwt)
+          .then((res) => {
+            console.log(res)
+            setLoggedIn(true);
+            setEmail(res.data.email)
+            history.push("/");
+            // if (res) {
+            //   // авторизуем пользователя
+            //   ({
+            //     loggedIn
+            //   }, () => {
+            //     // обернём App.js в withRouter
+            //     // так, что теперь есть доступ к этому методу
+            //     this.props.history.push("/");
+            //   });
+            // }
+          });
+      }
+    }
+    tokenCheck();
+    console.log(tokenCheck)
+  // }, [history]);
+
   function signOut() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
     history.push('/signin');
     setEmail(false);
   }
+
+
 
   // tokenCheck();
   // console.log(tokenCheck())

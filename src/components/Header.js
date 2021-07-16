@@ -4,7 +4,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 // function Header({ email, text, onSignOut, link }) {
 function Header({ email, onSignOut, loggedIn }) {
   //  console.log(email, text, onSignOut, link)
-  console.log(email, onSignOut)
+  console.log(email)
   const { pathname } = useLocation();
   const link = `${pathname === '/signup' ? 'signin' : 'signup'}`;
   const text = `${pathname === '/signup' ? 'войти' : 'регистрация'}`;

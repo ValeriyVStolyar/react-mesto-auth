@@ -67,7 +67,7 @@ function Login(props) {
       /> */}
       <main className="content">
         <section className="registration">
-          <form onSubmit={handleSubmit} className="register__form">
+          <form onSubmit={handleSubmit} className="registration__form">
             <h1 className="registration__title">вход</h1>
             <input id="registration__email" type="text" name="email" placeholder="email@mail.com"
               className="registration__input registration__input_type_email" value={email}

@@ -143,7 +143,9 @@ class Register extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    if (this.state.password === this.state.confirmPassword) {
+    if (!this.state.password || !this.state.email) {
+      return;
+    }
       // сюда добавим логику обработки формы регистрации
       const { password, email } = this.state;
       auth.register(password, email)
@@ -161,7 +163,6 @@ class Register extends React.Component {
             })
           }
         });
-    }
   }
   render() {
     return (
@@ -178,7 +179,7 @@ class Register extends React.Component {
         /> */}
         <main className="content">
           <section className="registration">
-            <form onSubmit={this.handleSubmit} className="register__form">
+            <form onSubmit={this.handleSubmit} className="registration__form">
               <h1 className="registration__title">регистрация</h1>
               <input id="registration__email" type="text" name="email" placeholder="Email"
                 className="registration__input registration__input_type_email"
