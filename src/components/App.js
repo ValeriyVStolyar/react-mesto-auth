@@ -16,7 +16,7 @@ import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import * as auth from '../utils/auth';
 
-function App(props) {
+function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -27,55 +27,13 @@ function App(props) {
 
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  // ({
+  //   succesText: 'что-то пошло не так! Попробуйте ещё раз.',
+  //   succesIcon: ''
+  // });
 
   const history = useHistory();
-
-  console.log(email)
-  console.log(loggedIn)
-
-  React.useEffect(() => {
-  //   setLoggedIn(true);
-  }, [])
-
-
-  // React.useEffect(() => {
-  //   const tokenCheck = () => {
-  //     // если у пользователя есть токен в localStorage,
-  //     // эта функция проверит валидность токена
-  //     const jwt = localStorage.getItem('token');
-  //     console.log(jwt)
-  //     if (jwt) {
-  //       // проверим токен
-  //       auth.getToken(jwt)
-  //         .then((res) => {
-  //           console.log(res)
-  //           if (res) {
-  //             // здесь можем получить данные пользователя!
-  //             // const userData = {
-  //             //   // password: res.username,
-  //             //   // email: res.email
-  //             //   // setEmail(res.email);
-  //             // }
-  //             // поместим их в стейт внутри App.js
-  //             setLoggedIn(true);
-  //             setEmail(res.data.email);
-  //             console.log(res.data.email)
-  //             history.push("/");
-  //             // this.setState({
-  //             //   loggedIn: true,
-  //             //   userData
-  //             // }, () => {
-  //             //   history.push("/");
-  //             // });
-  //           }
-  //         })
-  //         .catch(err => console.log('Ошибка. Запрос на проверку токена не выполнен.'));
-  //     }
-  //   };
-  // //  tokenCheck();
-  // }, [history]);
-  //  tokenCheck();
-
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -88,10 +46,6 @@ function App(props) {
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
   }
-
-  // const handleInfoTooltip = () => {
-  //   setIsInfoTooltipPopupOpen(true);
-  // }
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -178,7 +132,6 @@ function App(props) {
   function handleCardDelete(card) {
     api.deleteCard(card._id)
       .then(() => {
-        console.log()
         setCards(cards.filter(item =>
           item._id !== card._id)
         )
@@ -196,78 +149,52 @@ function App(props) {
   }
 
   const handleLogin = (password, email) => {
-    // auth.authorize(password, email)
-    //   .then((result) => {
-    //     console.log(result)
-    //   })
-    //   .catch(err => console.log('Ошибка. Запрос на вход не выполнен.'));
     setLoggedIn(true);
-    console.log('вход выполнен');
-    setIsInfoTooltipPopupOpen(true);
     const jwt = localStorage.getItem('token');
-  if (jwt) {
-    auth.getContent(jwt)
-      .then((res) => {
-        setLoggedIn(true);
-         setEmail(res.data.email);
-         history.push('/');
-       })
-       .catch((err) => console.log(err));
-   }
+    if (jwt) {
+      auth.getContent(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setEmail(res.data.email);
+          history.push('/');
+          setIsSuccess(true);
+          setIsInfoTooltipPopupOpen(true);
+        })
+        .catch((err) => console.log('Ошибка. Запрос вход не выполнен.'));
+    }
   }
 
   const handleRegister = (password, email) => {
     auth.register(password, email)
       .then((result) => {
-        console.log(result)
+        if (result) {
+          history.push('/signin');
+          setIsSuccess(true);
+          setIsInfoTooltipPopupOpen(true);
+        } else {
+          setIsSuccess(false);
+          setIsInfoTooltipPopupOpen(true);
+        }
       })
-      .catch(err => console.log('Ошибка. Запрос на регистрацию не выполнен.'));
+      .catch((err) => {
+        console.log('Ошибка. Запрос на регистрацию не выполнен.')
+      });
   }
 
-//     // React.useEffect(() => {
-//     const tokenCheck = () => {
-//       // если у пользователя есть токен в localStorage,
-//       // эта функция проверит валидность токена
-//       const jwt = localStorage.getItem('token');
-//       console.log(jwt)
-//       if (jwt) {
-//         // проверим токен
-//         //  auth.getContent(jwt)
-//         auth.getContent(jwt)
-//           .then((res) => {
-//             console.log(res)
-//             setLoggedIn(true);
-//             setEmail(res.data.email)
-//             history.push("/");
-//             // if (res) {
-//             //   // авторизуем пользователя
-//             //   ({
-//             //     loggedIn
-//             //   }, () => {
-//             //     // обернём App.js в withRouter
-//             //     // так, что теперь есть доступ к этому методу
-//             //     this.props.history.push("/");
-//             //   });
-//             // }
-//           });
-//       }
-//     }
-// //    tokenCheck();
-//     console.log(tokenCheck)
-//   // }, [history]);
-
-React.useEffect(() => {
-  const jwt = localStorage.getItem('token');
-  if (jwt) {
-    auth.getContent(jwt)
-      .then((res) => {
-        setLoggedIn(true);
-         setEmail(res.data.email);
-         history.push('/');
-       })
-       .catch((err) => console.log(err));
-   }
- }, [history]);
+  React.useEffect(() => {
+    // если у пользователя есть токен в localStorage,
+    // эта функция проверит валидность токена
+    const jwt = localStorage.getItem('token');
+    if (jwt) {
+      auth.getContent(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setEmail(res.data.email);
+          history.push('/');
+        })
+        .catch((err) => console.log('Ошибка. Запрос на проверку токена не выполнен.'));
+    }
+  }, [history]);
 
   function signOut() {
     setLoggedIn(false);
@@ -275,37 +202,6 @@ React.useEffect(() => {
     history.push('/signin');
     setEmail(false);
   }
-
-
-
-  // tokenCheck();
-  // console.log(tokenCheck())
-
-  //   fetch(`https://auth.nomoreparties.co/signin`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ password: '909@mail.ru', email: '909@mail.ru' })
-  // })
-  // fetch('https://auth.nomoreparties.co/signin', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({
-  //     password: '12345435',
-  //     email: '12345435@mail.ru',
-  //   }),
-  // })
-  //   .then((res) => res.json())
-  //   .then((data) => console.log(data));
-
-  //   data: {_id: "60e9cff0546906001995ebc1", email: "12345435@mail.ru"}
-  // _{token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M…wMjR9.3F_KoJYMhyr9FO0mdB6b21pXMWB-4bgRb6-_4dGZjQQ"}
-
-
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -317,38 +213,8 @@ React.useEffect(() => {
         <Header
           email={email}
           loggedIn={loggedIn}
-          // text={'выйти'}
-          // text={text}
           onSignOut={signOut}
-          // {
-          //   {loggedIn ? (<>'ji'</>) : (<>'jji'</>)}
-          // }
-          // {loggedIn
-          //   ? (<>
-          //       <div className='header__info-desktop'>
-          //         <span>{props.email}</span>
-          //         <button className='button link header__link' onClick={props.signOut}>Выйти</button>
-          //       </div>
-          //       <button
-          //         className={`header__menu  ${props.classHeaderMenu}`}
-          //         onClick={openAuthInfo}
-          //       >
-          //         <span/>
-          //       </button>
-          //     </>
-          //   )
-          //   : (<Link to={linkPath} className="button link header__link">{linkText}</Link>)
-          // }
         />
-        {/* <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        /> */}
         <Switch>
           <ProtectedRoute exact path="/"
             loggedIn={loggedIn}
@@ -360,9 +226,7 @@ React.useEffect(() => {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
-
           />
-
           <Route path="/signin">
             {/* <Login {...props} onLogin={handleLogin} /> */}
             <Login onLogin={handleLogin} />
@@ -403,7 +267,7 @@ React.useEffect(() => {
         <InfoTooltip
           isOpen={isInfoTooltipPopupOpen}
           onClose={closeAllPopups}
-          loggedIn={loggedIn}
+          isSuccess={isSuccess}
         />
       </div>
     </CurrentUserContext.Provider>
@@ -411,4 +275,3 @@ React.useEffect(() => {
 }
 
 export default withRouter(App);
-

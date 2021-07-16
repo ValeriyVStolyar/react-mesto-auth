@@ -1,31 +1,13 @@
 .header__text {
-  text-transform: capitalize;
   color: #fff;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
   line-height: 1.22;
-  /* text-decoration: none;
-  transition: opacity 2s ease-out; */
 }
 .header__text:first-child {
   margin-right: 20px;
 }
-/*
-.header__text:hover {
-  opacity: .6;
-  cursor: pointer;
-}
-
-.header__text:visited {
-  text-decoration: none;
-  color: #fff;
-}
-
-.header__text:active {
-  text-decoration: none;
-  color: #fff;
-} */
 
 @media screen and (max-width: 1023px) {
   .header__text {

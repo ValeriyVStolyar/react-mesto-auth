@@ -1,140 +1,20 @@
 import React, { Button } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import * as auth from '../utils/auth';
-//import Header from './Header';
-
-// function Register ({onRegister}) {
-
-//   const [email, setEmail] = React.useState('');
-//   const [password, setPassword] = React.useState('');
-
-// //      confirmPassword: 'somepassword12343459'
-
-
-//   function handleSetEmail (e) {
-//     setEmail(e.target.value)
-//   }
-
-//   function handleSetPassword (e) {
-//     setPassword(e.target.value)
-//   }
-
-//   function handleSubmit(e) {
-//     e.preventDefault()
-//     if (!email || !password ) {
-//       return;
-//     }
-//       console.log(email)
-//       console.log(password)
-//       onRegister(email, password);
-//       // сюда добавим логику обработки формы регистрации
-//     //  const { password, email } = this.state;
-//       auth.register(password, email)
-//         .then((res) => {
-//           console.log(res)
-//           // if (res) {
-//           //   ({
-//           //     message: ''
-//           //   }, () => {
-//           //     this.props.history.push('/singin');
-//           //   })
-//           // } else {
-//           //   ({
-//           //     message: 'Что-то пошло не так!'
-//           //   })
-//           // }
-//         });
-
-//   }
-
-//     return (
-//       <>
-//         {/* <header className="header">
-//           <a href="#" rel="noopener" className="logo"></a>
-//           <p className="header__text">
-//             войти
-//           </p>
-//         </header> */}
-//         <Header
-//           text={'войти'}
-//           link={'singin'}
-//         />
-//         <main className="content">
-//           <section className="registration">
-//             <form onSubmit={handleSubmit} className="register__form">
-//               <h1 className="registration__title">регистрация</h1>
-//               <input id="registration__email" type="text" name="email" placeholder="Email"
-//                 className="registration__input registration__input_type_email"
-//                 minLength="2" maxLength="30" value={email} required onChange={handleSetEmail} />
-//               <span className="registration__input-error registration__email-error"></span>
-//               <input id="registration__password" type="password" name="password" placeholder="Пароль"
-//                 className="registration__input registration__input_type_password"
-//                 value={password} required onChange={handleSetPassword} />
-//               <span className="registration__input-error registration__password-error"></span>
-//               <button type="submit" aria-label="Сохранить"
-//                 className="button button_type_login">зарегистрироваться</button>
-//               <p><Link to="singin" className="registration__subtitle">уже зарегистрированы&#63; Войти</Link></p>
-//             </form>
-//           </section>
-
-//         </main>
-//       </>
-//     );
-// }
-
-// export default withRouter(Register);
-    // return(
-    //   <div className="register">
-    //     <Logo title={'CryptoDucks'}/>
-    //     <p className="register__welcome">
-    //       Please register.
-    //     </p>
-    //     <form onSubmit={this.handleSubmit} className="register__form">
-    //       <label htmlFor="username">
-    //         Username:
-    //       </label>
-    //       <input id="username" name="username" type="text" value={this.state.username} onChange={this.handleChange} />
-    //       <label htmlFor="email">
-    //         Email:
-    //       </label>
-    //       <input id="email" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
-    //       <label htmlFor="password">
-    //         Password:
-    //       </label>
-    //       <input id="password" name="password" type="password" value={this.state.password} onChange={this.handleChange} />
-    //       <label htmlFor="confirmPassword">
-    //         Confirm password:
-    //       </label>
-    //       <input id="confirmPassword" name="confirmPassword" type="password" value={this.state.confirmPassword} onChange={this.handleChange} />
-    //         <div className="register__button-container">
-    //           <button type="submit" className="register__link">Sign up</button>
-    //         </div>
-    //     </form>
-    //     <div className="register__signin">
-    //       <p>Already a member?</p>
-    //       <Link to="login" className="register__login-link">Log in here</Link>
-    //     </div>
-    //   </div>
-    // )
-
-
-
-// // const [email, setEmail] = React.useState('');
-// // const [password, setPassword] = React.useState('');
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // email: 'email1023980iuo@yandex.ru',
       email: '',
-      // password: 'somepassword12343459',
       password: '',
-      confirmPassword: 'somepassword12343459'
+      message: ''
     }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleChange(e) {
     const { name, value } = e.target;
     this.setState({
@@ -146,37 +26,33 @@ class Register extends React.Component {
     if (!this.state.password || !this.state.email) {
       return;
     }
-      // сюда добавим логику обработки формы регистрации
-      const { password, email } = this.state;
-      auth.register(password, email)
-        .then((res) => {
-          console.log(res)
-          if (res) {
-            this.setState({
-              message: ''
-            }, () => {
-              this.props.history.push('/signin');
-            })
-          } else {
-            this.setState({
-              message: 'Что-то пошло не так!'
-            })
-          }
-        });
+    // сюда добавим логику обработки формы регистрации
+    const { password, email } = this.state;
+    // auth.register(password, email)
+    //   .then((res) => {
+    //     console.log(res)
+    this.props.onRegister(password, email);
+
+    // if (res) {
+    //   this.setState({
+    //     message: 'Супер'
+    //   }, () => {
+    //     this.props.onRegister(password, email);
+    //     this.props.history.push('/signin');
+    //   })
+    // } else {
+    //   this.setState({
+    //     message: 'Что-то пошло не так!'
+
+    //   }, () => {
+    //     this.props.onRegister(password, email);
+    //   })
+    // }
+    //      });
   }
   render() {
     return (
       <>
-        {/* <header className="header">
-          <a href="#" rel="noopener" className="logo"></a>
-          <p className="header__text">
-            войти
-          </p>
-        </header> */}
-        {/* <Header
-          text={'войти'}
-          link={'singin'}
-        /> */}
         <main className="content">
           <section className="registration">
             <form onSubmit={this.handleSubmit} className="registration__form">
@@ -194,7 +70,6 @@ class Register extends React.Component {
               <p><Link to="singin" className="registration__subtitle">уже зарегистрированы&#63; Войти</Link></p>
             </form>
           </section>
-
         </main>
       </>
     );

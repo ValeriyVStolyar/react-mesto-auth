@@ -1,10 +1,5 @@
 .header__link {
-  /* text-transform: uppercase;
-  color: #fff;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 1.22; */
+  text-transform: capitalize;
   text-decoration: none;
   transition: opacity 2s ease-out;
   color: #000;
@@ -25,14 +20,3 @@
   color: #fff;
 }
 
-/* @media screen and (max-width: 1023px) {
-  .header__text {
-    font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .header__text {
-    font-size: 14px;
-  }
-} */
