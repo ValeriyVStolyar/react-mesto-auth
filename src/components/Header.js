@@ -8,7 +8,7 @@ function Header({ email, onSignOut, loggedIn }) {
 
   return (
     <header className="header">
-      <a href="#" rel="noopener" className="logo"></a>
+      <Link to="/" rel="noopener" className="logo"></Link>
       {loggedIn
         ? (<ul className="header__list">
           <li className="header__text">{email}</li>

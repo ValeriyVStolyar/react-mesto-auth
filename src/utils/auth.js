@@ -9,11 +9,13 @@ export const register = (password, email) => {
     body: JSON.stringify({ password, email })
   })
     .then((checkResponse) => {
-        if (checkResponse.status === 201) {
-          return checkResponse.json();
-        }
+      console.log(checkResponse)
+      if (checkResponse.status === 201) {
+        return checkResponse.json();
+      }
     })
     .then((checkResponse) => {
+      console.log(checkResponse)
       return checkResponse;
     })
 };
@@ -28,9 +30,9 @@ export const authorize = (password, email) => {
     body: JSON.stringify({ password, email })
   })
     .then((checkResponse) => {
-        if (checkResponse.status === 200) {
-          return checkResponse.json();
-        }
+      if (checkResponse.status === 200) {
+        return checkResponse.json();
+      }
     })
     .then((checkResponse) => {
       // сохраняем токен
@@ -48,9 +50,9 @@ export const getContent = (token) => {
     },
   })
     .then((checkResponse) => {
-        if (checkResponse.status === 200) {
-          return checkResponse.json();
-        }
+      if (checkResponse.status === 200) {
+        return checkResponse.json();
+      }
     })
     .then((checkResponse) => {
       return checkResponse;

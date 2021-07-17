@@ -148,42 +148,7 @@ function App() {
       .catch(err => console.log('Ошибка. Запрос на добавление карточки не выполнен.'));
   }
 
-  const handleLogin = (password, email) => {
-    setLoggedIn(true);
-    const jwt = localStorage.getItem('token');
-    if (jwt) {
-      auth.getContent(jwt)
-        .then((res) => {
-          setLoggedIn(true);
-          setEmail(res.data.email);
-          history.push('/');
-          setIsSuccess(true);
-          setIsInfoTooltipPopupOpen(true);
-        })
-        .catch((err) => console.log('Ошибка. Запрос вход не выполнен.'));
-    }
-  }
-
-  const handleRegister = (password, email) => {
-    auth.register(password, email)
-      .then((result) => {
-        if (result) {
-          history.push('/signin');
-          setIsSuccess(true);
-          setIsInfoTooltipPopupOpen(true);
-        } else {
-          setIsSuccess(false);
-          setIsInfoTooltipPopupOpen(true);
-        }
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос на регистрацию не выполнен.')
-      });
-  }
-
-  React.useEffect(() => {
-    // если у пользователя есть токен в localStorage,
-    // эта функция проверит валидность токена
+  const checkToken = () => {
     const jwt = localStorage.getItem('token');
     if (jwt) {
       auth.getContent(jwt)
@@ -194,11 +159,51 @@ function App() {
         })
         .catch((err) => console.log('Ошибка. Запрос на проверку токена не выполнен.'));
     }
+  }
+
+  const handleLogin = (password, email) => {
+    auth.authorize(password, email)
+      .then((res) => {
+        if (res.token) {
+          setLoggedIn(true);
+          history.push('/');
+          checkToken();
+        }
+      })
+      .catch((err) => {
+        console.log('Ошибка. Запрос на вход не выполнен.')
+      });
+
+  }
+
+  const handleRegister = (password, email) => {
+    auth.register(password, email)
+      .then((result) => {
+        console.log(result)
+        if (result) {
+          setIsSuccess(true);
+          setIsInfoTooltipPopupOpen(true);
+          history.push('/signin');
+        }
+         else {
+          setIsSuccess(false);
+          setIsInfoTooltipPopupOpen(true);
+        }
+      })
+      .catch((err) => {
+        console.log('Ошибка. Запрос на регистрацию не выполнен.')
+        setIsSuccess(false);
+        setIsInfoTooltipPopupOpen(true);
+      });
+  }
+
+  React.useEffect(() => {
+    checkToken();
   }, [history]);
 
   function signOut() {
     setLoggedIn(false);
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
     history.push('/signin');
     setEmail(false);
   }
@@ -206,10 +211,6 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-
-        {/* ниже разместим защищённые маршруты */}
-        {/* и передадим несколько пропсов: loggedIn, path, component */}
-
         <Header
           email={email}
           loggedIn={loggedIn}

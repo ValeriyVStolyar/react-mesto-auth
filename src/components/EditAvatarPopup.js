@@ -6,9 +6,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   const currentUser = useContext(CurrentUserContext);
   const avatarDom = React.useRef();
 
-  React.useEffect(() => {
-  }, [currentUser]);
-
   function handleSubmit(e) {
     e.preventDefault();
 
