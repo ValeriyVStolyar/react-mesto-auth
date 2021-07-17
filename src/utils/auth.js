@@ -8,19 +8,14 @@ export const register = (password, email) => {
     },
     body: JSON.stringify({ password, email })
   })
-    .then((response) => {
-      try {
-        if (response.status === 201) {
-          return response.json();
+    .then((checkResponse) => {
+        if (checkResponse.status === 201) {
+          return checkResponse.json();
         }
-      } catch (e) {
-        return (e)
-      }
     })
-    .then((data) => {
-      return data;
+    .then((checkResponse) => {
+      return checkResponse;
     })
-  //    .catch((err) => console.log(err));
 };
 
 export const authorize = (password, email) => {
@@ -32,21 +27,16 @@ export const authorize = (password, email) => {
     },
     body: JSON.stringify({ password, email })
   })
-    .then((response) => {
-      try {
-        if (response.status === 200) {
-          return response.json();
+    .then((checkResponse) => {
+        if (checkResponse.status === 200) {
+          return checkResponse.json();
         }
-      } catch (e) {
-        return (e)
-      }
     })
-    .then((data) => {
+    .then((checkResponse) => {
       // сохраняем токен
-      localStorage.setItem('token', data.token);
-      return data;
+      localStorage.setItem('token', checkResponse.token);
+      return checkResponse;
     })
-    .catch((err) => console.log(err));
 };
 
 export const getContent = (token) => {
@@ -57,17 +47,12 @@ export const getContent = (token) => {
       "Authorization": `Bearer ${localStorage.getItem('token')}`
     },
   })
-    .then((response) => {
-      try {
-        if (response.status === 200) {
-          return response.json();
+    .then((checkResponse) => {
+        if (checkResponse.status === 200) {
+          return checkResponse.json();
         }
-      } catch (e) {
-        return (e)
-      }
     })
-    .then((res) => {
-      return res;
+    .then((checkResponse) => {
+      return checkResponse;
     })
-    .catch((err) => console.log(err));
 };
