@@ -179,15 +179,10 @@ function App() {
   const handleRegister = (password, email) => {
     auth.register(password, email)
       .then((result) => {
-        console.log(result)
         if (result) {
           setIsSuccess(true);
           setIsInfoTooltipPopupOpen(true);
           history.push('/signin');
-        }
-         else {
-          setIsSuccess(false);
-          setIsInfoTooltipPopupOpen(true);
         }
       })
       .catch((err) => {
@@ -229,7 +224,6 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <Route path="/signin">
-            {/* <Login {...props} onLogin={handleLogin} /> */}
             <Login onLogin={handleLogin} />
           </Route>
           <Route path="/signup">
